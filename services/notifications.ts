@@ -9,8 +9,8 @@ import {
 export const INACTIVITY_REMINDER_MS = 72 * 60 * 60 * 1000;
 
 
-const REMINDER_TITLE = 'Voice Journal Reminder';
-const REMINDER_BODY = "It's time for your Voice Journal check-in.";
+const REMINDER_TITLE = 'Voice Journal Caregivers Reminder';
+const REMINDER_BODY = "It's time for today's caregiver check-in.";
 
 export function initializeNotifications() {
   Notifications.setNotificationHandler({

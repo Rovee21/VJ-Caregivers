@@ -1,41 +1,92 @@
 import * as SecureStore from 'expo-secure-store';
+import { CareRecipientCondition } from './api';
 
-const PARTICIPANT_ID_KEY = 'participant_id';
-const PARTICIPANT_FIRST_NAME_KEY = 'participant_first_name';
+const CAREGIVER_PROFILE_KEY = 'caregiver_profile';
+const ORIENTATION_SEEN_KEY = 'orientation_seen';
 const THANK_YOU_BACKGROUND_AT_KEY = 'thank_you_background_at';
 const LAST_JOURNAL_SUBMISSION_AT_KEY = 'last_journal_submission_at';
 const INACTIVITY_NOTIFICATION_ID_KEY = 'inactivity_notification_id';
 
-export async function saveParticipantData(id: string, firstName: string) {
-  await SecureStore.setItemAsync(PARTICIPANT_ID_KEY, id);
-  await SecureStore.setItemAsync(PARTICIPANT_FIRST_NAME_KEY, firstName);
+export interface CaregiverProfile {
+  caregiverId: string;
+  caregiverFirstName: string;
+  recipientName: string;
+  recipientCondition: CareRecipientCondition;
+  completedEntryCount: number;
+  targetEntryCount: number;
 }
 
-export async function getParticipantId(): Promise<string | null> {
-  return await SecureStore.getItemAsync(PARTICIPANT_ID_KEY);
+export async function saveCaregiverProfile(profile: CaregiverProfile) {
+  await SecureStore.setItemAsync(CAREGIVER_PROFILE_KEY, JSON.stringify(profile));
 }
 
-export async function getParticipantFirstName(): Promise<string | null> {
-  return await SecureStore.getItemAsync(PARTICIPANT_FIRST_NAME_KEY);
+export async function getCaregiverProfile(): Promise<CaregiverProfile | null> {
+  const raw = await SecureStore.getItemAsync(CAREGIVER_PROFILE_KEY);
+
+  if (!raw) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(raw) as CaregiverProfile;
+  } catch (error) {
+    console.error('Failed to parse stored caregiver profile:', error);
+    return null;
+  }
 }
 
-// Keep for backward compatibility during transition
-export async function getParticipantName(): Promise<string | null> {
-  return await getParticipantFirstName();
+export async function getCaregiverId(): Promise<string | null> {
+  const profile = await getCaregiverProfile();
+  return profile?.caregiverId ?? null;
 }
 
-export async function isEnrolled(): Promise<boolean> {
-  const id = await getParticipantId();
-  return id !== null;
+// In-memory only (not SecureStore) — resets to false every time the app
+// process restarts, so sign-in is required on every launch during
+// development/testing. Swap isSignedInThisSession() below for a persisted
+// check once real accounts/sessions exist and this is no longer wanted.
+let signedInThisSession = false;
+
+export function markSignedInThisSession() {
+  signedInThisSession = true;
 }
 
-export async function clearParticipantInfo() {
-  await SecureStore.deleteItemAsync(PARTICIPANT_ID_KEY);
-  await SecureStore.deleteItemAsync(PARTICIPANT_FIRST_NAME_KEY);
+export function isSignedInThisSession(): boolean {
+  return signedInThisSession;
 }
 
-export async function clearAllParticipantData() {
-  await clearParticipantInfo();
+export async function clearCaregiverProfile() {
+  await SecureStore.deleteItemAsync(CAREGIVER_PROFILE_KEY);
+}
+
+export async function hasSeenOrientation(): Promise<boolean> {
+  return (await SecureStore.getItemAsync(ORIENTATION_SEEN_KEY)) === 'true';
+}
+
+export async function markOrientationSeen() {
+  await SecureStore.setItemAsync(ORIENTATION_SEEN_KEY, 'true');
+}
+
+// TODO(backend): once the backend returns an authoritative completedEntryCount
+// after each submission, replace this local increment with the server value.
+export async function incrementCompletedEntryCount(): Promise<number> {
+  const profile = await getCaregiverProfile();
+
+  if (!profile) {
+    return 0;
+  }
+
+  const updated: CaregiverProfile = {
+    ...profile,
+    completedEntryCount: profile.completedEntryCount + 1,
+  };
+
+  await saveCaregiverProfile(updated);
+  return updated.completedEntryCount;
+}
+
+export async function clearAllCaregiverData() {
+  await clearCaregiverProfile();
+  await SecureStore.deleteItemAsync(ORIENTATION_SEEN_KEY);
   await clearThankYouTimeoutState();
   await clearJournalReminderState();
 }

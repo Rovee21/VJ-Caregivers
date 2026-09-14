@@ -1,19 +1,19 @@
 {
   "expo": {
-    "name": "Voice Journal",
-    "slug": "voice-journal",
-    "version": "1.0.5",
+    "name": "Voice Journal Caregivers",
+    "slug": "voice-journal-caregivers",
+    "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "voicejournal",
+    "scheme": "voicejournalcaregivers",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "buildNumber": "5",
-      "bundleIdentifier": "com.ahlaad.voicejournal",
+      "buildNumber": "1",
+      "bundleIdentifier": "com.ahlaad.voicejournalcaregivers",
       "infoPlist": {
-        "NSMicrophoneUsageDescription": "This app uses your microphone to record voice samples for research on cognitive health and Alzheimer's. For example, you will record a short 5-minute voice entry that is securely stored for analysis.",
+        "NSMicrophoneUsageDescription": "This app uses your microphone to record your voice check-ins as part of a caregiver research study. Your responses are securely stored for analysis.",
         "ITSAppUsesNonExemptEncryption": false,
         "UIBackgroundModes": [
           "remote-notification"
@@ -22,14 +22,14 @@
     },
     "notification": {
       "icon": "./assets/images/icon.png",
-      "color": "#007AFF",
+      "color": "#5B4B8A",
       "androidMode": "default",
-      "androidCollapsedTitle": "Voice Journal Reminder"
+      "androidCollapsedTitle": "Voice Journal Caregivers Reminder"
     },
     "android": {
-      "package": "com.ahlaad.voicejournal",
+      "package": "com.ahlaad.voicejournalcaregivers",
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
+        "backgroundColor": "#FFF9EC",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
@@ -40,8 +40,7 @@
         "android.permission.RECORD_AUDIO",
         "android.permission.MODIFY_AUDIO_SETTINGS",
         "android.permission.POST_NOTIFICATIONS"
-      ],
-      "useNextNotificationsApi": true
+      ]
     },
     "web": {
       "output": "static",
@@ -55,16 +54,16 @@
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#ffffff",
+          "backgroundColor": "#FFF9EC",
           "dark": {
-            "backgroundColor": "#000000"
+            "backgroundColor": "#2A2438"
           }
         }
       ],
       [
         "expo-audio",
         {
-          "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone for voice recording."
+          "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone for voice check-ins."
         }
       ],
       "expo-secure-store",
@@ -73,9 +72,11 @@
         "expo-notifications",
         {
           "icon": "./assets/images/icon.png",
-          "color": "#007AFF"
+          "color": "#5B4B8A"
         }
-      ]
+      ],
+      "expo-asset",
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true,
@@ -84,13 +85,11 @@
     "runtimeVersion": {
       "policy": "appVersion"
     },
-    "updates": {
-      "url": "https://u.expo.dev/64de6736-c390-4a5c-bae7-11be564db064"
-    },
     "extra": {
       "router": {},
+      "apiBaseUrl": "https://TODO-caregivers-backend.example.com/api",
       "eas": {
-        "projectId": "7cf2e639-a544-4e30-aa26-7b4c673d31b2"
+        "projectId": "157e478b-544a-4874-b7ab-a17df0307825"
       }
     },
     "owner": "lad_y"
