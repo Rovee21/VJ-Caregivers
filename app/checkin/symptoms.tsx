@@ -52,7 +52,7 @@ export default function SymptomsScreen() {
       <Text style={styles.subtitle}>Tap all that apply. ({config.label} arm)</Text>
 
       <MultiSelectChipGrid
-        items={config.symptoms.map((s) => ({ key: s.key, label: s.label }))}
+        items={config.symptoms}
         selected={symptoms}
         onToggle={toggle}
         layout="wrap"

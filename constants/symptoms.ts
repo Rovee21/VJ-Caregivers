@@ -3,6 +3,7 @@ import { CareRecipientCondition } from '@/services/api';
 export interface SymptomOption {
   key: string;
   label: string;
+  emoji: string;
 }
 
 export interface SymptomConfig {
@@ -16,30 +17,30 @@ export const SYMPTOM_CONFIG: Record<CareRecipientCondition, SymptomConfig> = {
   dementia: {
     label: 'Dementia',
     symptoms: [
-      { key: 'calm_good_day', label: 'Calm / good day' },
-      { key: 'agitated', label: 'Agitated' },
-      { key: 'confused', label: 'Confused' },
-      { key: 'anxious', label: 'Anxious' },
-      { key: 'sad_withdrawn', label: 'Sad / withdrawn' },
-      { key: 'irritable', label: 'Irritable' },
-      { key: 'sleep_trouble', label: 'Sleep trouble' },
-      { key: 'wandering', label: 'Wandering' },
-      { key: 'repetitive', label: 'Repetitive' },
+      { key: 'calm_good_day', label: 'Calm / good day', emoji: '😌' },
+      { key: 'agitated', label: 'Agitated', emoji: '😤' },
+      { key: 'confused', label: 'Confused', emoji: '😵' },
+      { key: 'anxious', label: 'Anxious', emoji: '😰' },
+      { key: 'sad_withdrawn', label: 'Sad / withdrawn', emoji: '😔' },
+      { key: 'irritable', label: 'Irritable', emoji: '😠' },
+      { key: 'sleep_trouble', label: 'Sleep trouble', emoji: '🛌' },
+      { key: 'wandering', label: 'Wandering', emoji: '🚶' },
+      { key: 'repetitive', label: 'Repetitive', emoji: '🔁' },
     ],
   },
   cancer: {
     label: 'Cancer',
     symptoms: [
-      { key: 'comfortable_good_day', label: 'Comfortable / good day' },
-      { key: 'pain', label: 'Pain' },
-      { key: 'tired_low_energy', label: 'Tired / low energy' },
-      { key: 'drowsy', label: 'Drowsy' },
-      { key: 'nausea', label: 'Nausea' },
-      { key: 'poor_appetite', label: 'Poor appetite' },
-      { key: 'short_of_breath', label: 'Short of breath' },
-      { key: 'anxious', label: 'Anxious' },
-      { key: 'sad_low_mood', label: 'Sad / low mood' },
-      { key: 'constipation', label: 'Constipation' },
+      { key: 'comfortable_good_day', label: 'Comfortable / good day', emoji: '😌' },
+      { key: 'pain', label: 'Pain', emoji: '😣' },
+      { key: 'tired_low_energy', label: 'Tired / low energy', emoji: '😩' },
+      { key: 'drowsy', label: 'Drowsy', emoji: '🥱' },
+      { key: 'nausea', label: 'Nausea', emoji: '🤢' },
+      { key: 'poor_appetite', label: 'Poor appetite', emoji: '🍽️' },
+      { key: 'short_of_breath', label: 'Short of breath', emoji: '😮‍💨' },
+      { key: 'anxious', label: 'Anxious', emoji: '😰' },
+      { key: 'sad_low_mood', label: 'Sad / low mood', emoji: '😔' },
+      { key: 'constipation', label: 'Constipation', emoji: '😖' },
     ],
   },
 };

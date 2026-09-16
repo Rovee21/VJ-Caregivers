@@ -26,7 +26,7 @@ export function MultiSelectChipGrid({
   lastItemFullWidth,
 }: MultiSelectChipGridProps) {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, layout === 'wrap' && styles.containerWrap]}>
       {items.map((item, index) => {
         const isSelected = selected.includes(item.key);
         const isLast = index === items.length - 1;
@@ -42,7 +42,11 @@ export function MultiSelectChipGrid({
             onPress={() => onToggle(item.key)}
             activeOpacity={0.8}
           >
-            {item.emoji ? <Text style={styles.emoji}>{item.emoji}</Text> : null}
+            {item.emoji ? (
+              <Text style={layout === 'wrap' ? styles.emojiInline : styles.emoji}>
+                {item.emoji}
+              </Text>
+            ) : null}
             <Text style={[styles.label, isSelected && styles.labelSelected]}>{item.label}</Text>
           </TouchableOpacity>
         );
@@ -56,6 +60,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
+  },
+  containerWrap: {
+    justifyContent: 'flex-start',
   },
   tile: {
     width: '48%',
@@ -74,6 +81,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   pill: {
+    flexDirection: 'row',
+    alignItems: 'center',
     borderWidth: 1.5,
     borderColor: Palette.chipBorder,
     borderRadius: 20,
@@ -89,6 +98,10 @@ const styles = StyleSheet.create({
   emoji: {
     fontSize: 22,
     marginBottom: 4,
+  },
+  emojiInline: {
+    fontSize: 16,
+    marginRight: 6,
   },
   label: {
     fontSize: 14,
