@@ -4,8 +4,8 @@ import { Palette } from '@/constants/palette';
 
 interface ScreenCardProps {
   children: React.ReactNode;
-  // Content rendered below the main content, outside the scroll area — e.g.
-  // the sign-in screen's "Trouble signing in?" footnote.
+  // Content rendered below the main content, outside the scroll area — for
+  // a low-emphasis footnote that shouldn't scroll with the rest of the page.
   belowCard?: React.ReactNode;
 }
 

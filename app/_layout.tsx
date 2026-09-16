@@ -17,7 +17,7 @@ export default function RootLayout() {
         gestureEnabled: false,
       }}
     >
-      <Stack.Screen name="signin" />
+      <Stack.Screen name="intake" />
       <Stack.Screen name="welcome" />
       <Stack.Screen name="orientation" />
       <Stack.Screen name="index" />

@@ -20,6 +20,12 @@ export async function saveCaregiverProfile(profile: CaregiverProfile) {
   await SecureStore.setItemAsync(CAREGIVER_PROFILE_KEY, JSON.stringify(profile));
 }
 
+// TODO(backend): once a real backend exists, it should assign caregiverId —
+// this locally-generated placeholder just keeps the app working until then.
+export function generateLocalCaregiverId(): string {
+  return `local-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+}
+
 export async function getCaregiverProfile(): Promise<CaregiverProfile | null> {
   const raw = await SecureStore.getItemAsync(CAREGIVER_PROFILE_KEY);
 

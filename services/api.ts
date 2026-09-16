@@ -16,37 +16,6 @@ export const API_BASE_URL = configuredApiBaseUrl || PLACEHOLDER_API_BASE_URL;
 
 export type CareRecipientCondition = 'dementia' | 'cancer';
 
-export interface SignInCodeResponse {
-  caregiverId: string;
-  caregiverFirstName: string;
-  recipientName: string;
-  recipientCondition: CareRecipientCondition;
-  completedEntryCount: number;
-  targetEntryCount: number;
-}
-
-// TODO(backend): replace with a real endpoint once the caregivers backend
-// exists. For now this returns a mock response so the sign-in -> welcome ->
-// orientation -> check-in flow is click-through-able during development.
-export async function redeemSignInCode(code: string): Promise<SignInCodeResponse> {
-  const trimmedCode = code.trim();
-
-  if (!trimmedCode) {
-    throw new Error('Please enter your Voice Journal code');
-  }
-
-  console.warn('redeemSignInCode is using a mock response — no backend is wired up yet.');
-
-  return {
-    caregiverId: `mock-${trimmedCode.toLowerCase()}`,
-    caregiverFirstName: 'Mary',
-    recipientName: 'John',
-    recipientCondition: 'dementia',
-    completedEntryCount: 6,
-    targetEntryCount: 12,
-  };
-}
-
 export interface VoiceClip {
   uri: string;
   durationSeconds: number;

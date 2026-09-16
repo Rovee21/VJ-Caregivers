@@ -10,7 +10,7 @@ import {
   isSignedInThisSession,
 } from '@/services/storage';
 
-type Status = 'checking' | 'needsSignIn' | 'needsOrientation' | 'ready';
+type Status = 'checking' | 'needsIntake' | 'needsOrientation' | 'ready';
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -20,7 +20,7 @@ export default function HomeScreen() {
   useEffect(() => {
     async function checkStatus() {
       if (!isSignedInThisSession()) {
-        setStatus('needsSignIn');
+        setStatus('needsIntake');
         return;
       }
 
@@ -40,8 +40,8 @@ export default function HomeScreen() {
   // effect can resolve before expo-router's root layout has finished
   // mounting, and calling router.replace() that early throws. <Redirect>
   // is designed to be rendered declaratively and handles that timing itself.
-  if (status === 'needsSignIn') {
-    return <Redirect href="/signin" />;
+  if (status === 'needsIntake') {
+    return <Redirect href="/intake" />;
   }
 
   if (status === 'needsOrientation') {
