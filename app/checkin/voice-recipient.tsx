@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Alert } from 'react-native';
 import { VoiceRecordScreen } from '@/components/voice-record-screen';
 import { submitCheckIn, VoiceClip } from '@/services/api';
-import { getCaregiverProfile, incrementCompletedEntryCount } from '@/services/storage';
+import { getCaregiverProfile, setCompletedEntryCount } from '@/services/storage';
 import { useCheckIn } from './_layout';
 
 export default function VoiceRecipientScreen() {
@@ -31,8 +31,9 @@ export default function VoiceRecipientScreen() {
         return;
       }
 
-      await submitCheckIn({
+      const result = await submitCheckIn({
         caregiverId: profile.caregiverId,
+        checkInId: checkIn.checkInId,
         selfRecording: checkIn.selfClip,
         emotions: checkIn.emotions,
         stressLevel: checkIn.stressLevel,
@@ -41,7 +42,7 @@ export default function VoiceRecipientScreen() {
         recipientRecording: clip,
       });
 
-      await incrementCompletedEntryCount();
+      await setCompletedEntryCount(result.completedEntryCount);
       checkIn.reset();
       router.replace('/checkin/done');
     } catch (error) {

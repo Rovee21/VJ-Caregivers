@@ -7,24 +7,14 @@
     "icon": "./assets/images/icon.png",
     "scheme": "voicejournalcaregivers",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
       "buildNumber": "1",
       "bundleIdentifier": "com.ahlaad.voicejournalcaregivers",
       "infoPlist": {
         "NSMicrophoneUsageDescription": "This app uses your microphone to record your voice check-ins as part of a caregiver research study. Your responses are securely stored for analysis.",
-        "ITSAppUsesNonExemptEncryption": false,
-        "UIBackgroundModes": [
-          "remote-notification"
-        ]
+        "ITSAppUsesNonExemptEncryption": false
       }
-    },
-    "notification": {
-      "icon": "./assets/images/icon.png",
-      "color": "#5B4B8A",
-      "androidMode": "default",
-      "androidCollapsedTitle": "Voice Journal Caregivers Reminder"
     },
     "android": {
       "package": "com.ahlaad.voicejournalcaregivers",
@@ -34,12 +24,10 @@
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
-      "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
       "permissions": [
         "android.permission.RECORD_AUDIO",
-        "android.permission.MODIFY_AUDIO_SETTINGS",
-        "android.permission.POST_NOTIFICATIONS"
+        "android.permission.MODIFY_AUDIO_SETTINGS"
       ]
     },
     "web": {
@@ -68,15 +56,10 @@
       ],
       "expo-secure-store",
       "expo-font",
-      [
-        "expo-notifications",
-        {
-          "icon": "./assets/images/icon.png",
-          "color": "#5B4B8A"
-        }
-      ],
       "expo-asset",
-      "expo-web-browser"
+      "expo-web-browser",
+      "expo-image",
+      "expo-status-bar"
     ],
     "experiments": {
       "typedRoutes": true,
@@ -87,7 +70,6 @@
     },
     "extra": {
       "router": {},
-      "apiBaseUrl": "https://TODO-caregivers-backend.example.com/api",
       "eas": {
         "projectId": "157e478b-544a-4874-b7ab-a17df0307825"
       }

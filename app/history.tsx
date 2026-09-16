@@ -23,6 +23,17 @@ interface MarkedDates {
   };
 }
 
+function buildMarkedDates(history: CheckInHistoryEntry[]): MarkedDates {
+  const marked: MarkedDates = {};
+
+  history.forEach((entry) => {
+    const date = entry.submittedAt.split('T')[0];
+    marked[date] = { marked: true, dotColor: Palette.primary };
+  });
+
+  return marked;
+}
+
 export default function HistoryScreen() {
   const [entries, setEntries] = useState<CheckInHistoryEntry[]>([]);
   const [loading, setLoading] = useState(true);
@@ -32,40 +43,28 @@ export default function HistoryScreen() {
   const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
-    fetchHistory();
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- runs once on mount only
-  }, []);
+    async function fetchHistory() {
+      try {
+        const caregiverId = await getCaregiverId();
 
-  const fetchHistory = async () => {
-    try {
-      const caregiverId = await getCaregiverId();
+        if (!caregiverId) {
+          setEntries([]);
+          return;
+        }
 
-      if (!caregiverId) {
+        const history = await getCheckInHistory(caregiverId);
+        setEntries(history);
+        setMarkedDates(buildMarkedDates(history));
+      } catch (error) {
+        console.error('Error fetching history:', error);
         setEntries([]);
-        return;
+      } finally {
+        setLoading(false);
       }
-
-      const history = await getCheckInHistory(caregiverId);
-      setEntries(history);
-      markDates(history);
-    } catch (error) {
-      console.error('Error fetching history:', error);
-      setEntries([]);
-    } finally {
-      setLoading(false);
     }
-  };
 
-  const markDates = (history: CheckInHistoryEntry[]) => {
-    const marked: MarkedDates = {};
-
-    history.forEach((entry) => {
-      const date = entry.submittedAt.split('T')[0];
-      marked[date] = { marked: true, dotColor: Palette.primary };
-    });
-
-    setMarkedDates(marked);
-  };
+    fetchHistory();
+  }, []);
 
   const handleDayPress = (day: { dateString: string }) => {
     const dateEntries = entries.filter((entry) => entry.submittedAt.split('T')[0] === day.dateString);

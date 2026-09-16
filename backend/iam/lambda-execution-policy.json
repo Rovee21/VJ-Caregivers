@@ -1,0 +1,31 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DynamoDBAccess",
+      "Effect": "Allow",
+      "Action": [
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:Query",
+        "dynamodb:GetItem"
+      ],
+      "Resource": [
+        "arn:aws:dynamodb:REGION:ACCOUNT_ID:table/VoiceJournalCaregivers-Caregivers",
+        "arn:aws:dynamodb:REGION:ACCOUNT_ID:table/VoiceJournalCaregivers-CheckIns"
+      ]
+    },
+    {
+      "Sid": "S3PresignedUploads",
+      "Effect": "Allow",
+      "Action": ["s3:PutObject"],
+      "Resource": "arn:aws:s3:::YOUR-BUCKET-NAME/*"
+    },
+    {
+      "Sid": "KMSForEncryptedResources",
+      "Effect": "Allow",
+      "Action": ["kms:GenerateDataKey", "kms:Decrypt"],
+      "Resource": "arn:aws:kms:REGION:ACCOUNT_ID:key/YOUR-KMS-KEY-ID"
+    }
+  ]
+}

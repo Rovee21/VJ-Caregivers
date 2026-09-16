@@ -13,7 +13,7 @@ export function formatRecordingTime(seconds: number): string {
 // recipient" check-in steps so the recording logic only lives in one place.
 export function useVoiceRecorder(maxSeconds: number) {
   const audioRecorder = useAudioRecorder({
-    extension: '.m4a',
+    extension: '.mp4',
     sampleRate: 44100,
     numberOfChannels: 1,
     bitRate: 128000,

@@ -13,12 +13,8 @@ import {
 import { ScreenCard } from '@/components/screen-card';
 import { ScreenHeader } from '@/components/screen-header';
 import { Palette } from '@/constants/palette';
-import { CareRecipientCondition } from '../services/api';
-import {
-  generateLocalCaregiverId,
-  markSignedInThisSession,
-  saveCaregiverProfile,
-} from '../services/storage';
+import { CareRecipientCondition, createCaregiverProfile } from '../services/api';
+import { saveCaregiverProfile } from '../services/storage';
 
 const CONDITIONS: { key: CareRecipientCondition; label: string }[] = [
   { key: 'dementia', label: 'Dementia' },
@@ -30,8 +26,9 @@ export default function IntakeScreen() {
   const [caregiverFirstName, setCaregiverFirstName] = useState('');
   const [recipientName, setRecipientName] = useState('');
   const [condition, setCondition] = useState<CareRecipientCondition | null>(null);
+  const [submitting, setSubmitting] = useState(false);
 
-  const canContinue = caregiverFirstName.trim() && recipientName.trim() && condition;
+  const canContinue = caregiverFirstName.trim() && recipientName.trim() && condition && !submitting;
 
   const handleContinue = async () => {
     if (!caregiverFirstName.trim() || !recipientName.trim()) {
@@ -44,17 +41,22 @@ export default function IntakeScreen() {
       return;
     }
 
-    await saveCaregiverProfile({
-      caregiverId: generateLocalCaregiverId(),
-      caregiverFirstName: caregiverFirstName.trim(),
-      recipientName: recipientName.trim(),
-      recipientCondition: condition,
-      completedEntryCount: 0,
-      targetEntryCount: 12,
-    });
+    setSubmitting(true);
 
-    markSignedInThisSession();
-    router.replace('/welcome');
+    try {
+      const profile = await createCaregiverProfile({
+        caregiverFirstName: caregiverFirstName.trim(),
+        recipientName: recipientName.trim(),
+        recipientCondition: condition,
+      });
+
+      await saveCaregiverProfile(profile);
+      router.replace('/welcome');
+    } catch (error: any) {
+      Alert.alert('Could not continue', error.message || 'Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -121,7 +123,7 @@ export default function IntakeScreen() {
           onPress={handleContinue}
           disabled={!canContinue}
         >
-          <Text style={styles.buttonText}>Continue</Text>
+          <Text style={styles.buttonText}>{submitting ? 'Saving…' : 'Continue'}</Text>
         </TouchableOpacity>
       </ScreenCard>
     </KeyboardAvoidingView>
