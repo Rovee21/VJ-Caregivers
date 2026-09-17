@@ -45,9 +45,9 @@ export default function VoiceRecipientScreen() {
       await setCompletedEntryCount(result.completedEntryCount);
       checkIn.reset();
       router.replace('/checkin/done');
-    } catch (error) {
+    } catch (error: any) {
       console.error('Check-in submission error:', error);
-      Alert.alert('Save failed', 'Could not save your check-in. Please try again.');
+      Alert.alert('Save failed', error?.message || 'Could not save your check-in. Please try again.');
     } finally {
       setSubmitting(false);
     }
