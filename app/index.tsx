@@ -3,7 +3,12 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ScreenCard } from '@/components/screen-card';
 import { Palette } from '@/constants/palette';
-import { CaregiverProfile, getCaregiverProfile, hasSeenOrientation, isSignedIn } from '@/services/storage';
+import {
+  CaregiverProfile,
+  getCaregiverProfile,
+  hasSeenOrientation,
+  isSignedInThisSession,
+} from '@/services/storage';
 
 type Status = 'checking' | 'needsIntake' | 'needsOrientation' | 'ready';
 
@@ -14,7 +19,7 @@ export default function HomeScreen() {
 
   useEffect(() => {
     async function checkStatus() {
-      if (!(await isSignedIn())) {
+      if (!isSignedInThisSession()) {
         setStatus('needsIntake');
         return;
       }

@@ -4,6 +4,8 @@ import { CareRecipientCondition } from './api';
 const CAREGIVER_PROFILE_KEY = 'caregiver_profile';
 const ORIENTATION_SEEN_KEY = 'orientation_seen';
 const THANK_YOU_BACKGROUND_AT_KEY = 'thank_you_background_at';
+const LAST_JOURNAL_SUBMISSION_AT_KEY = 'last_journal_submission_at';
+const INACTIVITY_NOTIFICATION_ID_KEY = 'inactivity_notification_id';
 
 export interface CaregiverProfile {
   caregiverId: string;
@@ -44,10 +46,17 @@ export async function getCaregiverId(): Promise<string | null> {
   return profile?.caregiverId ?? null;
 }
 
-// Persisted — true once intake has ever been completed on this device, so
-// sign-in only happens once, not on every launch.
-export async function isSignedIn(): Promise<boolean> {
-  return (await getCaregiverId()) !== null;
+// In-memory only (not SecureStore) — resets to false every time the app
+// process restarts, so sign-in is required on every launch. Temporary,
+// for testing — swap for a persisted check once this isn't wanted anymore.
+let signedInThisSession = false;
+
+export function markSignedInThisSession() {
+  signedInThisSession = true;
+}
+
+export function isSignedInThisSession(): boolean {
+  return signedInThisSession;
 }
 
 export async function clearCaregiverProfile() {
@@ -78,6 +87,40 @@ export async function clearAllCaregiverData() {
   await clearCaregiverProfile();
   await SecureStore.deleteItemAsync(ORIENTATION_SEEN_KEY);
   await clearThankYouTimeoutState();
+  await clearJournalReminderState();
+}
+
+export async function setLastJournalSubmissionAt(timestamp: number) {
+  await SecureStore.setItemAsync(LAST_JOURNAL_SUBMISSION_AT_KEY, String(timestamp));
+}
+
+export async function getLastJournalSubmissionAt(): Promise<number | null> {
+  const rawTimestamp = await SecureStore.getItemAsync(LAST_JOURNAL_SUBMISSION_AT_KEY);
+
+  if (!rawTimestamp) {
+    return null;
+  }
+
+  const timestamp = Number(rawTimestamp);
+  return Number.isNaN(timestamp) ? null : timestamp;
+}
+
+export async function setInactivityNotificationId(notificationId: string | null) {
+  if (!notificationId) {
+    await SecureStore.deleteItemAsync(INACTIVITY_NOTIFICATION_ID_KEY);
+    return;
+  }
+
+  await SecureStore.setItemAsync(INACTIVITY_NOTIFICATION_ID_KEY, notificationId);
+}
+
+export async function getInactivityNotificationId(): Promise<string | null> {
+  return await SecureStore.getItemAsync(INACTIVITY_NOTIFICATION_ID_KEY);
+}
+
+export async function clearJournalReminderState() {
+  await SecureStore.deleteItemAsync(LAST_JOURNAL_SUBMISSION_AT_KEY);
+  await SecureStore.deleteItemAsync(INACTIVITY_NOTIFICATION_ID_KEY);
 }
 
 export async function setThankYouBackgroundTimestamp(timestamp: number | null) {

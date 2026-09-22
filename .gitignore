@@ -46,3 +46,11 @@ app-example
 # additional files to ignore
 AuthKey_VM4XRAAG22.p8
 .vscode/
+
+# backend/scripts/export_data.py output — real caregiver data (names,
+# conditions, emotions, symptoms) and actual voice recordings. Never commit.
+backend/scripts/export/
+
+# Python virtual environment for backend/scripts/ — local, regeneratable
+# via `pip install -r requirements.txt`, never commit.
+backend/scripts/venv/

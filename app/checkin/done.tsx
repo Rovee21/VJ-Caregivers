@@ -4,6 +4,7 @@ import { AppState, AppStateStatus, StyleSheet, Text, TouchableOpacity, View } fr
 import { ScreenCard } from '@/components/screen-card';
 import { ScreenHeader } from '@/components/screen-header';
 import { Palette } from '@/constants/palette';
+import { refreshInactivityReminderAfterSubmission } from '@/services/notifications';
 import {
   clearThankYouTimeoutState,
   getCaregiverProfile,
@@ -29,6 +30,7 @@ export default function DoneScreen() {
       }
     });
 
+    refreshInactivityReminderAfterSubmission();
     clearThankYouTimeoutState();
   }, []);
 
