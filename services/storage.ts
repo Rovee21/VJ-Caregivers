@@ -46,19 +46,6 @@ export async function getCaregiverId(): Promise<string | null> {
   return profile?.caregiverId ?? null;
 }
 
-// In-memory only (not SecureStore) — resets to false every time the app
-// process restarts, so sign-in is required on every launch. Temporary,
-// for testing — swap for a persisted check once this isn't wanted anymore.
-let signedInThisSession = false;
-
-export function markSignedInThisSession() {
-  signedInThisSession = true;
-}
-
-export function isSignedInThisSession(): boolean {
-  return signedInThisSession;
-}
-
 export async function clearCaregiverProfile() {
   await SecureStore.deleteItemAsync(CAREGIVER_PROFILE_KEY);
 }

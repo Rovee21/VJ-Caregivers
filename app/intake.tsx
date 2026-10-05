@@ -14,7 +14,7 @@ import { ScreenCard } from '@/components/screen-card';
 import { ScreenHeader } from '@/components/screen-header';
 import { Palette } from '@/constants/palette';
 import { CareRecipientCondition, createCaregiverProfile } from '../services/api';
-import { markSignedInThisSession, saveCaregiverProfile } from '../services/storage';
+import { saveCaregiverProfile } from '../services/storage';
 
 const CONDITIONS: { key: CareRecipientCondition; label: string }[] = [
   { key: 'dementia', label: 'Dementia' },
@@ -51,7 +51,6 @@ export default function IntakeScreen() {
       });
 
       await saveCaregiverProfile(profile);
-      markSignedInThisSession();
       router.replace('/welcome');
     } catch (error: any) {
       Alert.alert('Could not continue', error.message || 'Please try again.');

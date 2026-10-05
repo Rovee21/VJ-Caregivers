@@ -54,3 +54,17 @@ backend/scripts/export/
 # Python virtual environment for backend/scripts/ — local, regeneratable
 # via `pip install -r requirements.txt`, never commit.
 backend/scripts/venv/
+
+# Participant data and recordings — never commit, wherever they end up.
+*.xlsx
+*.csv
+*.m4a
+*.mp4
+recordings/
+
+# AWS local config and credentials
+.aws/
+aws-credentials*
+
+# Admin portal page — contains account-specific Cognito and API endpoints
+backend/admin-portal/index.html

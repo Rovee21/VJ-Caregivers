@@ -1,0 +1,23 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CaregiversReadOnly",
+      "Effect": "Allow",
+      "Action": ["dynamodb:Scan"],
+      "Resource": "arn:aws:dynamodb:REGION:ACCOUNT_ID:table/VoiceJournalCaregivers-Caregivers"
+    },
+    {
+      "Sid": "CheckInsReadLatest",
+      "Effect": "Allow",
+      "Action": ["dynamodb:Query"],
+      "Resource": "arn:aws:dynamodb:REGION:ACCOUNT_ID:table/VoiceJournalCaregivers-CheckIns"
+    },
+    {
+      "Sid": "KMSForEncryptedResources",
+      "Effect": "Allow",
+      "Action": ["kms:Decrypt"],
+      "Resource": "arn:aws:kms:REGION:ACCOUNT_ID:key/YOUR-KMS-KEY-ID"
+    }
+  ]
+}

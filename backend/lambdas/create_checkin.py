@@ -49,11 +49,13 @@ def lambda_handler(event, context):
         checkins_table.put_item(Item=item)
 
         # Server-authoritative count, replacing the app's earlier local
-        # increment placeholder now that a real backend exists.
+        # increment placeholder now that a real backend exists. Also stamps
+        # lastSubmittedAt on the caregiver record so the admin progress
+        # portal can show "last active" without scanning CheckIns per row.
         updated = caregivers_table.update_item(
             Key={'caregiverId': caregiver_id},
-            UpdateExpression='ADD completedEntryCount :one',
-            ExpressionAttributeValues={':one': 1},
+            UpdateExpression='ADD completedEntryCount :one SET lastSubmittedAt = :now',
+            ExpressionAttributeValues={':one': 1, ':now': submitted_at},
             ReturnValues='UPDATED_NEW',
         )
 
