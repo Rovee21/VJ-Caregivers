@@ -47,14 +47,6 @@ app-example
 AuthKey_VM4XRAAG22.p8
 .vscode/
 
-# backend/scripts/export_data.py output — real caregiver data (names,
-# conditions, emotions, symptoms) and actual voice recordings. Never commit.
-backend/scripts/export/
-
-# Python virtual environment for backend/scripts/ — local, regeneratable
-# via `pip install -r requirements.txt`, never commit.
-backend/scripts/venv/
-
 # Participant data and recordings — never commit, wherever they end up.
 *.xlsx
 *.csv
@@ -66,5 +58,6 @@ recordings/
 .aws/
 aws-credentials*
 
-# Admin portal page — contains account-specific Cognito and API endpoints
-backend/admin-portal/index.html
+# Entire backend (admin portal, Lambdas, IAM policy templates, setup docs) —
+# kept local/private, not part of the public repo.
+backend/
